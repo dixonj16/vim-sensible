@@ -2,6 +2,10 @@
 " Maintainer:   Tim Pope <http://tpo.pe/>
 " Version:      1.0
 
+" Mappings. type \todo to open .todo File.
+noremap ; :
+nmap <unique><Leader>todo :vsplit ~/.todo<CR>
+
 if exists('g:loaded_sensible') || &compatible
   finish
 else
@@ -14,9 +18,8 @@ endif
 if has('syntax') && !exists('g:syntax_on')
   syntax enable
 endif
-
+ 
 " Use :help 'option' to see the documentation for the given option.
-
 set autoindent
 set backspace=indent,eol,start
 set complete-=i
@@ -25,10 +28,18 @@ set smarttab
 
 set nrformats-=octal
 set shiftround
+set shiftwidth=2
 
 set ttimeout
 set ttimeoutlen=50
 
+" Set tabstop to 2 spaces
+set tabstop=2
+
+" Options for Searching.
+set ignorecase     " ignore case when searching
+set smartcase      " except for mixed case
+set hlsearch       " highlight matching words
 set incsearch
 " Use <C-L> to clear the highlighting of :set hlsearch.
 if maparg('<C-L>', 'n') ==# ''
@@ -70,22 +81,6 @@ if &tabpagemax < 50
 endif
 if !empty(&viminfo)
   set viminfo^=!
-endif
-
-let s:dir = has('win32') ? '$APPDATA/Vim' : match(system('uname'), "Darwin") > -1 ? '~/Library/Vim' : empty($XDG_DATA_HOME) ? '~/.local/share/vim' : '$XDG_DATA_HOME/vim'
-if isdirectory(expand(s:dir))
-  if &directory =~# '^\.,'
-    let &directory = expand(s:dir) . '/swap//,' . &directory
-  endif
-  if &backupdir =~# '^\.,'
-    let &backupdir = expand(s:dir) . '/backup//,' . &backupdir
-  endif
-  if exists('+undodir') && &undodir =~# '^\.\%(,\|$\)'
-    let &undodir = expand(s:dir) . '/undo//,' . &undodir
-  endif
-endif
-if exists('+undofile')
-  set undofile
 endif
 
 " Allow color schemes to do bright colors without forcing bold.
